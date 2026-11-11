@@ -115,7 +115,7 @@ section{padding:34px 0}
 .ft-lines circle.draw{opacity:0;animation:pop .3s .6s forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes pop{to{opacity:1}}
-.p{position:absolute;width:150px;height:176px;margin-left:-75px;opacity:0;transform:scale(.5) translateY(-30px);pointer-events:none;
+.p{position:absolute;width:150px;height:200px;margin-left:-75px;opacity:0;transform:scale(.5) translateY(-30px);pointer-events:none;
   transition:opacity .4s,transform .5s cubic-bezier(.3,1.4,.5,1)}
 .p.show{opacity:1;transform:none;pointer-events:auto}
 .pc{height:100%;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:14px 10px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;transition:border-color .25s,transform .25s}
@@ -126,7 +126,7 @@ section{padding:34px 0}
 .prel{margin-top:8px;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
 .pname{font-weight:700;font-size:.86rem;line-height:1.25;margin-top:2px}
 .pname small{display:block;font-size:.66rem;color:var(--muted);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-.prole{font-size:.72rem;color:var(--muted);line-height:1.3;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prole{font-size:.72rem;color:var(--muted);line-height:1.3;margin-top:3px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .p.me .pc{background:linear-gradient(160deg,var(--maroon),#4a0f1a);border:none;color:#fff}
 .p.me .pav{border-color:#f1d9a8}
 .p.me .prel{color:#f1d9a8}
@@ -254,47 +254,71 @@ footer .mantra{opacity:1;animation:none;font-size:1rem}
 
 <script>
 // ---- Family tree: one card per person, placed on a grid of columns and generations ----
-const COLUMN_WIDTH = 170, ROW_HEIGHT = 260, CARD_HEIGHT = 176, PADDING = 50;
+const COLUMN_WIDTH = 170, ROW_HEIGHT = 260, CARD_HEIGHT = 200, PADDING = 50;
 
-// branch = which button reveals this person: "me" (always shown), "core", "father", "mother"
+// branch = which button reveals this person. "me" is always shown: me, parents, sister and brother-in-law.
+// Each branch opens only when its parent branch is open too.
+const parentBranch = { father: null, mother: null, telavane: "father", sansare: "father", sanjay: "father", kamerkar: "mother", gandhe: "mother" };
 const people = {
-  chandrakant: { name: "Chandrakant Gujare", late: true, rel: "Grandfather", role: "TC at BEST Mumbai", col: 2.5, row: 0, branch: "father" },
-  rohini:      { name: "Rohini Gujare", late: true, rel: "Grandmother", role: "Homemaker", col: 3.5, row: 0, branch: "father" },
-  shriram:     { name: "Shriram Gandhe", late: true, rel: "Grandfather", role: "School Principal", col: 8, row: 0, branch: "mother" },
-  jayanti:     { name: "Jayanti Gandhe", late: true, rel: "Grandmother", role: "School Principal", col: 9, row: 0, branch: "mother" },
+  chandrakant: { name: "Chandrakant Gujare", late: true, rel: "Grandfather", role: "TC, BEST (Brihanmumbai Electric Supply & Transport)", col: 3.5, row: 0, branch: "father" },
+  rohini:      { name: "Rohini Gujare", late: true, rel: "Grandmother", role: "Homemaker", col: 4.5, row: 0, branch: "father" },
+  shriram:     { name: "Shriram Gandhe", late: true, rel: "Grandfather", role: "School Principal", col: 11.5, row: 0, branch: "mother" },
+  jayanti:     { name: "Jayanti Gandhe", late: true, rel: "Grandmother", role: "School Principal", col: 12.5, row: 0, branch: "mother" },
 
-  pradnya:     { name: "Pradnya Telavane", rel: "Aunt", role: "Homemaker", col: 0, row: 1, branch: "father" },
-  pramod:      { name: "Pramod Telavane", rel: "Uncle", role: "Retd. Officer, Thane Municipal Corp.", col: 1, row: 1, branch: "father" },
-  seema:       { name: "Seema Sansare", rel: "Aunt", role: "Homemaker", col: 2, row: 1, branch: "father" },
+  pradnya:     { name: "Pradnya Telavane", rel: "Aunt", role: "Homemaker", col: 0, row: 1, branch: "father", opens: "telavane" },
+  pramod:      { name: "Pramod Telavane", rel: "Uncle", role: "Retired Officer, Thane Municipal Corporation", col: 1, row: 1, branch: "father" },
+  seema:       { name: "Seema Sansare", rel: "Aunt", role: "Homemaker", col: 2, row: 1, branch: "father", opens: "sansare" },
   mahesh:      { name: "Mahesh Sansare", rel: "Uncle", role: "Business Owner, Hotel", col: 3, row: 1, branch: "father" },
-  sanjay:      { name: "Sanjay Gujare", rel: "Uncle", role: "Business Owner, Fabrication", col: 4, row: 1, branch: "father" },
-  rakhi:       { name: "Rakhi Gujare", rel: "Aunt", role: "Homemaker", col: 5, row: 1, branch: "father" },
-  vidyadhar:   { name: "Vidyadhar Gujare", rel: "Father", role: "Retd. Accounts Officer, Air India", col: 6, row: 1, branch: "core", opens: "father" },
-  pragati:     { name: "Pragati Gujare", rel: "Mother", role: "Business Owner, Beauty Salon & Spa", col: 7, row: 1, branch: "core", opens: "mother" },
-  chhaaya:     { name: "Chhaaya Kamerkar", rel: "Aunt", role: "Retd. Officer, Water Testing Dept, TMC", col: 8, row: 1, branch: "mother" },
-  chandrashekhar: { name: "Chandrashekhar Kamerkar", rel: "Uncle", role: "Retd. Consultant, Oracle FSS", col: 9, row: 1, branch: "mother" },
-  prashant:    { name: "Prashant Gandhe", late: true, rel: "Uncle", role: "Business Owner, Road Construction", col: 10, row: 1, branch: "mother" },
-  pranjali:    { name: "Pranjali Gandhe", rel: "Aunt", role: "School Principal", col: 11, row: 1, branch: "mother" },
+  sanjay:      { name: "Sanjay Gujare", rel: "Uncle", role: "Business Owner, Fabrication", col: 5, row: 1, branch: "father", opens: "sanjay" },
+  rakhi:       { name: "Rakhi Gujare", rel: "Aunt", role: "Homemaker", col: 6, row: 1, branch: "father" },
+  vidyadhar:   { name: "Vidyadhar Gujare", rel: "Father", role: "Retired Accounts Officer, Air India", col: 8, row: 1, branch: "me", opens: "father" },
+  pragati:     { name: "Pragati Gujare", rel: "Mother", role: "Business Owner, Beauty Salon & Spa", col: 9, row: 1, branch: "me", opens: "mother" },
+  chhaaya:     { name: "Chhaaya Kamerkar", rel: "Aunt", role: "Retired Officer, Water Testing Department, Thane Municipal Corporation", col: 11, row: 1, branch: "mother", opens: "kamerkar" },
+  chandrashekhar: { name: "Chandrashekhar Kamerkar", rel: "Uncle", role: "Retired Consultant, Oracle Financial Services Software", col: 12, row: 1, branch: "mother" },
+  prashant:    { name: "Prashant Gandhe", late: true, rel: "Uncle", role: "Business Owner, Road Construction", col: 15, row: 1, branch: "mother", opens: "gandhe" },
+  pranjali:    { name: "Pranjali Gandhe", rel: "Aunt", role: "School Principal", col: 16, row: 1, branch: "mother" },
 
-  ankit:       { name: "Ankit Gujare", rel: "Me", role: "AI Engineer · Content Creator", col: 6, row: 2, branch: "me", opens: "core", photo: "photo.jpg" },
-  chaitali:    { name: "Chaitali Satam", rel: "Sister", role: "HR Professional, Nitrex Chemical", col: 7, row: 2, branch: "core" },
-  sushant:     { name: "Sushant Satam", rel: "Brother-in-law", role: "SAP Consultant, TCS", col: 8, row: 2, branch: "core" }
+  kedar:       { name: "Kedar Telavane", rel: "Cousin Brother", role: "Senior Vice President, Cyber Team, HDFC", col: 0, row: 2, branch: "telavane" },
+  pallavi:     { name: "Pallavi Utekar", rel: "Cousin's Wife", role: "Doctor", col: 1, row: 2, branch: "telavane" },
+  mihir:       { name: "Mihir Sansare", rel: "Cousin Brother", role: "Software Developer, Accenture", col: 2.5, row: 2, branch: "sansare" },
+  yash:        { name: "Yash Gujare", rel: "Cousin Brother", role: "Business Owner", col: 4, row: 2, branch: "sanjay" },
+  urvi:        { name: "Urvi Sahani", rel: "Cousin's Wife", role: "Compliance Audit Manager, Third Bridge", col: 5, row: 2, branch: "sanjay" },
+  mrunal:      { name: "Mrunal Gujare", rel: "Cousin Sister", role: "Business Owner, Interior Designer", col: 6, row: 2, branch: "sanjay" },
+  hitesh:      { name: "Hitesh Oberoi", rel: "Cousin's Husband", role: "Business Owner, Interior Designer", col: 7, row: 2, branch: "sanjay" },
+  ankit:       { name: "Ankit Gujare", rel: "Me", role: "AI Engineer · Content Creator", col: 8, row: 2, branch: "me", photo: "photo.jpg" },
+  chaitali:    { name: "Chaitali Satam", rel: "Sister", role: "Human Resources Professional, Nitrex Chemical", col: 9, row: 2, branch: "me" },
+  sushant:     { name: "Sushant Satam", rel: "Brother-in-law", role: "SAP Consultant, Tata Consultancy Services", col: 10, row: 2, branch: "me" },
+  sukrut:      { name: "Sukrut Kamerkar", rel: "Cousin Brother", role: "Postdoctoral Researcher, Dartmouth College", col: 11, row: 2, branch: "kamerkar" },
+  devika:      { name: "Devika Andhare Kamerkar", rel: "Cousin's Wife", role: "Postdoctoral Researcher, Dartmouth College", col: 12, row: 2, branch: "kamerkar" },
+  manali:      { name: "Manali Kamerkar", rel: "Cousin Sister", role: "Doctor", col: 13, row: 2, branch: "kamerkar" },
+  pranav:      { name: "Pranav Gandhe", rel: "Cousin Brother", role: "Film Editor", col: 14, row: 2, branch: "gandhe" },
+  sanika:      { name: "Sanika Sule Gandhe", rel: "Cousin's Wife", role: "Assistant Director", col: 15, row: 2, branch: "gandhe" },
+  prasanna:    { name: "Prasanna Gandhe", rel: "Cousin Brother", role: "Co-Founder & Managing Director, Acuflow Bioprocess LLP", col: 16, row: 2, branch: "gandhe" },
+  aditi:       { name: "Aditi Joshi Gandhe", rel: "Cousin's Wife", role: "Singing Teacher", col: 17, row: 2, branch: "gandhe" }
 };
 const couples = [["chandrakant", "rohini"], ["shriram", "jayanti"], ["pradnya", "pramod"], ["seema", "mahesh"],
-  ["sanjay", "rakhi"], ["vidyadhar", "pragati"], ["chhaaya", "chandrashekhar"], ["prashant", "pranjali"], ["chaitali", "sushant"]];
+  ["sanjay", "rakhi"], ["vidyadhar", "pragati"], ["chhaaya", "chandrashekhar"], ["prashant", "pranjali"],
+  ["kedar", "pallavi"], ["yash", "urvi"], ["mrunal", "hitesh"], ["chaitali", "sushant"],
+  ["sukrut", "devika"], ["pranav", "sanika"], ["prasanna", "aditi"]];
 const families = [
   { parents: ["chandrakant", "rohini"], kids: ["pradnya", "seema", "sanjay", "vidyadhar"] },
   { parents: ["shriram", "jayanti"], kids: ["pragati", "chhaaya", "prashant"] },
-  { parents: ["vidyadhar", "pragati"], kids: ["ankit", "chaitali"] }
+  { parents: ["pradnya", "pramod"], kids: ["kedar"] },
+  { parents: ["seema", "mahesh"], kids: ["mihir"] },
+  { parents: ["sanjay", "rakhi"], kids: ["yash", "mrunal"] },
+  { parents: ["vidyadhar", "pragati"], kids: ["ankit", "chaitali"] },
+  { parents: ["chhaaya", "chandrashekhar"], kids: ["sukrut", "manali"] },
+  { parents: ["prashant", "pranjali"], kids: ["pranav", "prasanna"] }
 ];
 
-const open = { core: false, father: false, mother: false };
-let scale = 1;
+const open = Object.fromEntries(Object.keys(parentBranch).map(b => [b, false]));
+let scale = 1.15;
 const ft = document.getElementById("ft"), sizer = document.getElementById("sizer"),
       world = document.getElementById("world"), lines = document.getElementById("lines");
 const x = id => people[id].col * COLUMN_WIDTH + COLUMN_WIDTH / 2;
 const y = id => people[id].row * ROW_HEIGHT;
-const isShown = id => people[id].branch === "me" || open[people[id].branch];
+const isOpen = branch => branch === "me" || (open[branch] && (!parentBranch[branch] || isOpen(parentBranch[branch])));
+const isShown = id => isOpen(people[id].branch);
 const initials = name => name.split(" ").map(w => w[0]).join("");
 
 // Build every card once; showing and hiding is done with a class
@@ -318,13 +342,14 @@ for (const [id, p] of Object.entries(people)) {
   p.el = el;
   world.appendChild(el);
 }
-const worldWidth = 12 * COLUMN_WIDTH, worldHeight = 2 * ROW_HEIGHT + CARD_HEIGHT;
+const worldWidth = 18 * COLUMN_WIDTH, worldHeight = 2 * ROW_HEIGHT + CARD_HEIGHT;
 lines.setAttribute("width", worldWidth);
 lines.setAttribute("height", worldHeight);
 
 function toggleBranch(branch, fromId) {
   open[branch] = !open[branch];
-  if (branch === "core" && !open.core) open.father = open.mother = false;
+  // Closing a side also closes the cousin branches under it
+  if (!open[branch]) for (const child in parentBranch) if (parentBranch[child] === branch) open[child] = false;
   render();
   centerOn(fromId);
 }
@@ -370,7 +395,7 @@ function render() {
       const hidden = Object.values(people).filter(q => q.branch === p.opens).length;
       p.button.textContent = open[p.opens] ? "−" : "+" + hidden;
       p.button.classList.toggle("open", open[p.opens]);
-      p.button.classList.toggle("pulse", id === "ankit" && !open.core);
+      p.button.classList.toggle("pulse", p.branch === "me" && !open.father && !open.mother);
     }
   }
   const b = visibleBounds();
@@ -380,18 +405,21 @@ function render() {
   drawLines();
 }
 
-function centerOn(id) {
+function centerOn(id, behavior = "smooth") {
   const b = visibleBounds();
   ft.scrollTo({
     left: (x(id) - b.left) * scale - ft.clientWidth / 2,
     top: (y(id) + CARD_HEIGHT / 2 - b.top) * scale - ft.clientHeight / 2,
-    behavior: "smooth"
+    behavior
   });
 }
 
+// Zoom around whatever is in the middle of the view right now
 function setScale(next) {
+  const middleX = (ft.scrollLeft + ft.clientWidth / 2) / scale, middleY = (ft.scrollTop + ft.clientHeight / 2) / scale;
   scale = Math.min(1.4, Math.max(0.3, next));
   render();
+  ft.scrollTo(middleX * scale - ft.clientWidth / 2, middleY * scale - ft.clientHeight / 2);
 }
 function fitScale() {
   const b = visibleBounds();
@@ -399,15 +427,16 @@ function fitScale() {
 }
 
 document.getElementById("expandAll").onclick = () => {
-  open.core = open.father = open.mother = true;
+  for (const b in open) open[b] = true;
   scale = Math.max(0.6, fitScale());
   render();
   centerOn("ankit");
 };
 document.getElementById("collapseAll").onclick = () => {
-  open.core = open.father = open.mother = false;
-  scale = 1;
+  for (const b in open) open[b] = false;
+  scale = 1.15;
   render();
+  centerOn("ankit");
 };
 document.getElementById("zoomIn").onclick = () => setScale(scale + 0.15);
 document.getElementById("zoomOut").onclick = () => setScale(scale - 0.15);
@@ -428,6 +457,7 @@ window.addEventListener("pointermove", e => {
 window.addEventListener("pointerup", () => { drag = null; ft.classList.remove("dragging"); });
 
 render();
+centerOn("ankit", "instant");
 
 // ---- Age from date of birth ----
 const birth = new Date(1998, 5, 19), today = new Date();
