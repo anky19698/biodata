@@ -115,7 +115,7 @@ section{padding:34px 0}
 .ft-lines circle.draw{opacity:0;animation:pop .3s .6s forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes pop{to{opacity:1}}
-.p{position:absolute;width:150px;height:200px;margin-left:-75px;opacity:0;transform:scale(.5) translateY(-30px);pointer-events:none;
+.p{position:absolute;width:150px;height:220px;margin-left:-75px;opacity:0;transform:scale(.5) translateY(-30px);pointer-events:none;
   transition:opacity .4s,transform .5s cubic-bezier(.3,1.4,.5,1)}
 .p.show{opacity:1;transform:none;pointer-events:auto}
 .pc{height:100%;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:14px 10px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;transition:border-color .25s,transform .25s}
@@ -126,7 +126,7 @@ section{padding:34px 0}
 .prel{margin-top:8px;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
 .pname{font-weight:700;font-size:.86rem;line-height:1.25;margin-top:2px}
 .pname small{display:block;font-size:.66rem;color:var(--muted);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-.prole{font-size:.72rem;color:var(--muted);line-height:1.3;margin-top:3px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.prole{font-size:.72rem;color:var(--muted);line-height:1.3;margin-top:3px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .p.me .pc{background:linear-gradient(160deg,var(--maroon),#4a0f1a);border:none;color:#fff}
 .p.me .pav{border-color:#f1d9a8}
 .p.me .prel{color:#f1d9a8}
@@ -252,7 +252,7 @@ footer .mantra{opacity:1;animation:none;font-size:1rem}
 
 <script>
 // ---- Family tree: one card per person, placed on a grid of columns and generations ----
-const COLUMN_WIDTH = 170, ROW_HEIGHT = 260, CARD_HEIGHT = 200, PADDING = 50;
+const COLUMN_WIDTH = 170, ROW_HEIGHT = 260, CARD_HEIGHT = 220, PADDING = 50;
 
 // branch = which button reveals this person. "me" is always shown: me, parents, sister and brother-in-law.
 // Each branch opens only when its parent branch is open too.
@@ -277,7 +277,7 @@ const people = {
   pranjali:    { name: "Pranjali Gandhe", rel: "Aunt", role: "School Principal", col: 16, row: 1, branch: "mother" },
 
   kedar:       { name: "Kedar Telavane", rel: "Cousin Brother", role: "Senior Vice President, Cyber Team, HDFC", col: 0, row: 2, branch: "telavane" },
-  pallavi:     { name: "Pallavi Utekar", rel: "Cousin's Wife", role: "Doctor", col: 1, row: 2, branch: "telavane" },
+  pallavi:     { name: "Pallavi Utekar", rel: "Cousin's Wife", role: "Dermatologist | MBBS, MD", col: 1, row: 2, branch: "telavane" },
   mihir:       { name: "Mihir Sansare", rel: "Cousin Brother", role: "Software Developer, Accenture", col: 2.5, row: 2, branch: "sansare" },
   yash:        { name: "Yash Gujare", rel: "Cousin Brother", role: "Business Owner", col: 4, row: 2, branch: "sanjay" },
   urvi:        { name: "Urvi Sahani", rel: "Cousin's Wife", role: "Compliance Audit Manager, Third Bridge", col: 5, row: 2, branch: "sanjay" },
@@ -288,7 +288,7 @@ const people = {
   sushant:     { name: "Sushant Satam", rel: "Brother-in-law", role: "SAP Consultant, Tata Consultancy Services", col: 10, row: 2, branch: "me" },
   sukrut:      { name: "Sukrut Kamerkar", rel: "Cousin Brother", role: "Postdoctoral Researcher, Dartmouth College", col: 11, row: 2, branch: "kamerkar" },
   devika:      { name: "Devika Andhare", rel: "Cousin's Wife", role: "Postdoctoral Researcher, Dartmouth College", col: 12, row: 2, branch: "kamerkar" },
-  manali:      { name: "Manali Kamerkar", rel: "Cousin Sister", role: "Doctor", col: 13, row: 2, branch: "kamerkar" },
+  manali:      { name: "Manali Kamerkar", rel: "Cousin Sister", role: "General Surgeon | MBBS", col: 13, row: 2, branch: "kamerkar" },
   pranav:      { name: "Pranav Gandhe", rel: "Cousin Brother", role: "Film Editor", col: 14, row: 2, branch: "gandhe" },
   sanika:      { name: "Sanika Sule", rel: "Cousin's Wife", role: "Assistant Director", col: 15, row: 2, branch: "gandhe" },
   prasanna:    { name: "Prasanna Gandhe", rel: "Cousin Brother", role: "Co-Founder & Managing Director, Acuflow Bioprocess LLP", col: 16, row: 2, branch: "gandhe" },
