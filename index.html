@@ -120,8 +120,8 @@ section{padding:34px 0}
 .p.show{opacity:1;transform:none;pointer-events:auto}
 .pc{height:100%;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:14px 10px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;transition:border-color .25s,transform .25s}
 .p:hover .pc{border-color:var(--gold);transform:translateY(-3px)}
-.pav{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:var(--maroon);background:var(--gold-soft);border:2px solid var(--gold);flex-shrink:0}
-.pav img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center 15%}
+.pav{width:58px;height:58px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-weight:700;color:var(--maroon);background:var(--gold-soft);border:2px solid var(--gold);flex-shrink:0}
+.pav img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 18%}
 .p.late .pav{filter:grayscale(1);opacity:.7;border-color:var(--line)}
 .prel{margin-top:8px;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gold)}
 .pname{font-weight:700;font-size:.86rem;line-height:1.25;margin-top:2px}
@@ -289,12 +289,12 @@ const people = {
   chaitali:    { name: "Chaitali Satam", rel: "Sister", role: "Human Resources Professional, Nitrex Chemical", col: 9, row: 2, branch: "me" },
   sushant:     { name: "Sushant Satam", rel: "Brother-in-law", role: "SAP Consultant, Tata Consultancy Services", col: 10, row: 2, branch: "me" },
   sukrut:      { name: "Sukrut Kamerkar", rel: "Cousin Brother", role: "Postdoctoral Researcher, Dartmouth College", col: 11, row: 2, branch: "kamerkar" },
-  devika:      { name: "Devika Andhare Kamerkar", rel: "Cousin's Wife", role: "Postdoctoral Researcher, Dartmouth College", col: 12, row: 2, branch: "kamerkar" },
+  devika:      { name: "Devika Andhare", rel: "Cousin's Wife", role: "Postdoctoral Researcher, Dartmouth College", col: 12, row: 2, branch: "kamerkar" },
   manali:      { name: "Manali Kamerkar", rel: "Cousin Sister", role: "Doctor", col: 13, row: 2, branch: "kamerkar" },
   pranav:      { name: "Pranav Gandhe", rel: "Cousin Brother", role: "Film Editor", col: 14, row: 2, branch: "gandhe" },
-  sanika:      { name: "Sanika Sule Gandhe", rel: "Cousin's Wife", role: "Assistant Director", col: 15, row: 2, branch: "gandhe" },
+  sanika:      { name: "Sanika Sule", rel: "Cousin's Wife", role: "Assistant Director", col: 15, row: 2, branch: "gandhe" },
   prasanna:    { name: "Prasanna Gandhe", rel: "Cousin Brother", role: "Co-Founder & Managing Director, Acuflow Bioprocess LLP", col: 16, row: 2, branch: "gandhe" },
-  aditi:       { name: "Aditi Joshi Gandhe", rel: "Cousin's Wife", role: "Singing Teacher", col: 17, row: 2, branch: "gandhe" }
+  aditi:       { name: "Aditi Joshi", rel: "Cousin's Wife", role: "Singing Teacher", col: 17, row: 2, branch: "gandhe" }
 };
 const couples = [["chandrakant", "rohini"], ["shriram", "jayanti"], ["pradnya", "pramod"], ["seema", "mahesh"],
   ["sanjay", "rakhi"], ["vidyadhar", "pragati"], ["chhaaya", "chandrashekhar"], ["prashant", "pranjali"],
